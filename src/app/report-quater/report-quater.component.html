@@ -1,0 +1,148 @@
+<style>
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Kanit', sans-serif !important;
+    }
+</style>
+<app-auth-content>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0" style="font-weight: bold;">คำสั่งซื้อ</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
+                            <li class="breadcrumb-item active">คำสั่งซื้อ</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-success card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-weight: bold;">เครื่องมือ</h3>
+
+                            <div class="card-tools py-2 mt-1">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a href="#" class="dropdown-item">Action</a>
+                                        <a href="#" class="dropdown-item">Another action</a>
+                                        <a href="#" class="dropdown-item">Something else here</a>
+                                        <a class="dropdown-divider"></a>
+                                        <a href="#" class="dropdown-item">Separated link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div style="display: block">
+                                        <chart [type]="type" class="w-100" legend="true" [data]="data" [options]="options"></chart>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="display: block">
+                                        <chart [type]="type2" class="w-100"  legend="true" [data]="data2" [options]="options"></chart>
+                                    </div>
+                                    <div class="p-5">
+                                        <div>
+                                            <span class="badge badge-primary" style="background-color: #1abc9c;width:20px;">
+                                                &nbsp;
+                                            </span>
+                                            Overdose
+                                            <span class="ml-5">65%</span>
+                                        </div>
+                                        <div>
+                                            <span class="badge badge-primary" style="background-color: #FF1b9c;width:20px;">
+                                                &nbsp;
+                                            </span>
+                                            Gelato 
+                                            <span class="ml-5 pl-3"> 35%</span>
+                                        </div>                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-weight: bold;">รายการสั่งซื้อ</h3>
+
+                            <div class="card-tools py-2 mt-1">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a href="#" class="dropdown-item">Action</a>
+                                        <a href="#" class="dropdown-item">Another action</a>
+                                        <a href="#" class="dropdown-item">Something else here</a>
+                                        <a class="dropdown-divider"></a>
+                                        <a href="#" class="dropdown-item">Separated link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>เดือน</th>
+                                        <th>จำนวนเงิน (บาท)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>มกราคม - มีนาคม</td>
+                                        <td class="text-right">78,300.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td>..</td>
+                                        <td class="text-right">..</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ตุลาคม - ธันวาคม</td>
+                                        <td class="text-right">107,000.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </section>
+    </div>
+</app-auth-content>

@@ -1,0 +1,241 @@
+<app-auth-content>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0" style="font-weight: bold;">สินค้า</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
+                            <li class="breadcrumb-item active">สินค้า</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title" style="font-weight: bold;">รายการหมวดหมู่สินค้า</h5>
+
+                            <div class="card-tools py-2 mt-1">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a href="#" class="dropdown-item">Action</a>
+                                        <a href="#" class="dropdown-item">Another action</a>
+                                        <a href="#" class="dropdown-item">Something else here</a>
+                                        <a class="dropdown-divider"></a>
+                                        <a href="#" class="dropdown-item">Separated link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <button class="btn btn-success" (click)="openModal(template)">
+                                เพิ่มหมวดสินค้า
+                            </button>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>หมวดหมู่</th>
+                                        <th>จำนวน (ชิ้น)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of c.category;let i = index;">
+                                        <td>{{option.sp==1 ? i+1 : sp*2-1+i}}</td>
+                                        <td>{{ data.name }}</td>
+                                        <td>
+                                            {{data.num}}
+                                            <span *ngIf="!data.num">0</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <pagination [totalItems]="c.total_items" (pageChanged)="pageChanged($event)"
+                                [(ngModel)]="option.sp" [itemsPerPage]="2" [maxSize]="5" previousText="ก่อนหน้า"
+                                nextText="ถัดไป"></pagination>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title" style="font-weight: bold;">รายการสินค้า</h5>
+
+                            <div class="card-tools py-2 mt-1">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a href="#" class="dropdown-item">Action</a>
+                                        <a href="#" class="dropdown-item">Another action</a>
+                                        <a href="#" class="dropdown-item">Something else here</a>
+                                        <a class="dropdown-divider"></a>
+                                        <a href="#" class="dropdown-item">Separated link</a>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <button class="btn btn-success" (click)="openModal(modalProduct)">
+                                เพิ่มรายการสินค้า
+                            </button>
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อสินค้า</th>
+                                        <th>ชนิดสินค้า</th>
+                                        <th>ราคา (บาท)</th>
+                                        <th>
+                                            จำนวนผู้เข้าชม
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let data of p.product;let i = index;">
+                                        <td>{{ i+1 }}</td>
+                                        <td>
+                                            {{ data.name }}<br>
+                                            <img src="{{ data.image }}" class="img-thumbnail" style="max-height: 100px;"
+                                                alt="">
+                                        </td>
+                                        <td>
+                                            <span *ngIf="data.category=='Overdose'" class="badge badge-info">{{ data.category }}</span>
+                                            <span *ngIf="data.category=='Gelato'" class="badge badge-info" style="background-color:#9932cc">{{ data.category }}</span>
+                                        </td>
+                                        <td>฿ {{ data.price }}</td>
+                                        <td>
+                                            {{ data.visit }}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-warning text-white mx-1" (click)="openModal2(modalProduct,data)" tooltip="แก้ไข">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger" (click)="onDelete(data._id)" tooltip="ลบข้อมูล">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer">
+                            <pagination [totalItems]="p.total_items" (pageChanged)="pageChanged2($event)"
+                                [(ngModel)]="pageProduct.sp" [itemsPerPage]="productLp" [maxSize]="5" previousText="ก่อนหน้า"
+                                nextText="ถัดไป"></pagination>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <ng-template #template>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">เพิ่มรายการหมวดสินค้า</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form [formGroup]="form">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">หมวดหมู่สินค้า</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="กรุณากรอกชื่อ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="onSubmit()" class="btn btn-primary ml-auto">
+                    เพิ่มข้อมูล
+                </button>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template #modalProduct>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">
+                {{update==false ? 'เพิ่มรายการสินค้า' : 'แก้ไขรายการสินค้า'}}
+            </h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form [formGroup]="formProduct" (submit)="onSubmitProduct()">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">ชื่อ</label>
+                    <input type="text" class="form-control" formControlName="name" placeholder="กรุณากรอกชื่อ">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">ราคา</label>
+                    <input type="number" class="form-control" formControlName="price" placeholder="กรุณากรอกชื่อ">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">ประเภท</label>
+                    <select class="form-select form-control" formControlName="category" aria-label="Default select example">
+                        <option disabled selected value> -- select an option -- </option>
+                        <option *ngFor="let data of c.category" value="{{ data._id }}">{{ data.name }}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">ไฟล์รูปภาพ</label>
+                    <input class="form-control" type="file"  (change)="handleUpload(inputFile)" #inputFile>
+                    <img [src]="formProduct.value.image" *ngIf="formProduct.value.image" class="img-thumbnail w-50 mt-3">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">หน่วย</label>
+                    <input type="text" class="form-control" formControlName="unit" placeholder="กรุณากรอกชื่อ">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">รสชาติ</label>
+                    <input type="text" class="form-control" formControlName="taste" placeholder="กรุณากรอกชื่อ">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button *ngIf="update==false" type="submit" class="btn btn-primary ml-auto">
+                    เพิ่มข้อมูล
+                </button>
+
+                <button *ngIf="update==true" type="submit" class="btn btn-warning ml-auto">
+                    แก้ไขข้อมูล
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</app-auth-content>
