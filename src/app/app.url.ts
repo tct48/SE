@@ -4,5 +4,7 @@ export const AppURL = {
     Promotion: "promotion",
     Order: "order",
     Report: "report",
-    Quater: "report-quater"
+    Quater: "report-quater",
+    Signin: "login",
+    Authentication: "authentication"
 }

@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { SigninComponent } from './signin/signin.component';
 
 const otherModule = [
   ReactiveFormsModule,
@@ -45,7 +46,8 @@ const otherModule = [
     PromotionComponent,
     OrderComponent,
     ReportComponent,
-    ReportQuaterComponent
+    ReportQuaterComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,26 @@
 import { RouterModule, Routes } from "@angular/router";
 import { AppURL } from "./app.url";
+import { AuthenticationModule } from "./authentication/authentication.module";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { AuthenticationGuard } from "./guard/authentication.guard";
 import { OrderComponent } from "./order/order.component";
 import { ProductComponent } from "./product/product.component";
 import { PromotionComponent } from "./promotion/promotion.component";
 import { ReportQuaterComponent } from "./report-quater/report-quater.component";
 import { ReportComponent } from "./report/report.component";
+import { SigninComponent } from "./signin/signin.component";
 
 const RouterLists: Routes = [
-    { path: '', redirectTo: AppURL.Dashboard, pathMatch: 'full' },
-    { path: AppURL.Dashboard, component: DashboardComponent },
-    { path: AppURL.Product, component: ProductComponent },
-    { path: AppURL.Promotion, component: PromotionComponent },
-    { path: AppURL.Order, component: OrderComponent },
-    { path: AppURL.Report, component: ReportComponent },
-    { path: AppURL.Quater, component:ReportQuaterComponent}
+    { path: '', redirectTo: AppURL.Signin, pathMatch: 'full' },
+    { path: AppURL.Dashboard, component: DashboardComponent, canActivate:[AuthenticationGuard] },
+    { path: AppURL.Product, component: ProductComponent, canActivate:[AuthenticationGuard] },
+    { path: AppURL.Promotion, component: PromotionComponent, canActivate:[AuthenticationGuard] },
+    { path: AppURL.Order, component: OrderComponent, canActivate:[AuthenticationGuard] },
+    { path: AppURL.Report, component: ReportComponent, canActivate:[AuthenticationGuard] },
+    { path: AppURL.Quater, component:ReportQuaterComponent, canActivate:[AuthenticationGuard]},
+    { path: AppURL.Signin, component:SigninComponent},
+    // { path:AppURL.Authentication,loadChildren:()=>AuthenticationModule,canActivate:[Authenticationg] }
+
 ]
 
 export const AppRouting = RouterModule.forRoot(RouterLists);

@@ -30,6 +30,7 @@ export class ProductComponent implements OnInit {
     this.loadProductItem(this.pageProduct);
 
     this.initialFormCategory();
+    this.loadModelCategory();
   }
 
   form!: FormGroup;
@@ -69,6 +70,17 @@ export class ProductComponent implements OnInit {
   url: any
   selectedFile: ImageSnippet;
   dumb: any;
+
+  MCategory:any= {
+    items:[],
+    total_items:0
+  }
+
+  loadModelCategory(){
+    this.category.loadCategoryInsert().then(result=>{
+      this.MCategory = result;
+    })
+  }
 
   handleUpload(input: HTMLInputElement) {
     const imageControl = this.formProduct.controls['image'];

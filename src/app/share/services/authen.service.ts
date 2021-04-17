@@ -10,7 +10,11 @@ export class AuthenService{
     private accessKey = 'accessToken';
 
     getAuthenticate() : any {
-        return this.accessKey;
+        return localStorage.getItem(this.accessKey);
+    }
+
+    setAuthenticate():any{
+        localStorage.setItem(this.accessKey,this.accessKey);
     }
 
     clearAuthenticated():void {

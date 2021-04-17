@@ -20,6 +20,12 @@ export class CategoryService{
             .toPromise() as Promise<any>
     }
 
+    loadCategoryInsert(){
+        let url=`category/_get_insert.php?`;
+        return this.http.requestGet(url,this.authen.getAuthenticate())
+            .toPromise() as Promise<any>
+    }
+
     InsertCategory(model: ICategory){
         return this.http.requestPost('category/_post.php',model)
             .toPromise() as Promise<any>;

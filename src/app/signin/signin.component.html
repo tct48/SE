@@ -1,0 +1,36 @@
+<div class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <h5>Snowmilk</h5>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">ลงชื่อเข้าใช้เพื่อเริ่มใช้งาน</p>
+
+                <form [formGroup]="form" (submit)="onLogin()">
+                    <div class="input-group mb-3">
+                        <input type="text" formControlName="username" class="form-control" placeholder="ยูซเซอร์เนม">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" formControlName="password" class="form-control" placeholder="รหัสผ่าน">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">เข้าสู่ระบบ</button>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>

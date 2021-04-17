@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../share/services/alert.service';
+import { AuthenService } from '../share/services/authen.service';
 import { OptionSearch, OrdersService } from '../share/services/orders.service';
 
 @Component({
@@ -59,8 +60,14 @@ export class OrderComponent implements OnInit {
     private orders: OrdersService,
     private alert:AlertService,
     private modalService: BsModalService,
+    private authen:AuthenService
   ) {
     this.loadOrders(this.option);
+    // if(this.authen.getAuthenticate()){
+    //   console.log(this.authen.getAuthenticate())
+    //   console.log("WTF");
+    //   this.alert.notify("ไปล๊อกอินดิ้เย็ดแม่")
+    // }
   }
 
   pageChanged(event: any): void {
