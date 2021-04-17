@@ -59,37 +59,64 @@
                         <!-- /.card-header -->
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-info" type="button" (click)="onReload()">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="visually-hidden mr-1"></span>
+                                        โหลดข้อมูลจริง
+                                    </button>
+                                    <button class="btn btn-secondary ml-3" type="button" (click)="onRandom()">
+                                        <span class="spinner-grow spinner-grow-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="visually-hidden mr-1"></span>
+                                        ข้อมูลสมมติ
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="data.datasets.length>0">
                                 <div class="col-md-8">
                                     <div style="display: block">
-                                        <chart [type]="type" class="w-100" legend="true" [data]="data" [options]="options"></chart>
+                                        <chart [type]="type" class="w-100" legend="true" [data]="data"
+                                            [options]="options"></chart>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div style="display: block">
-                                        <chart [type]="type2" class="w-100"  legend="true" [data]="data2" [options]="options"></chart>
+                                        <chart [type]="type2" class="w-100" legend="true" [data]="data2"
+                                            [options]="options"></chart>
                                     </div>
                                     <div class="p-5">
+                                        <h6 style="font-weight: bold;">
+                                            จำแนกเป็น
+                                        </h6>
                                         <div>
-                                            <span class="badge badge-primary" style="background-color: #1abc9c;width:20px;">
+                                            <span class="badge badge-primary"
+                                                style="background-color: #1abc9c;width:20px;">
                                                 &nbsp;
                                             </span>
                                             Overdose
-                                            <span class="ml-5">65%</span>
+                                            <span class="ml-5">
+                                                {{ p.overdose | number : '1.2-2' }}%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="badge badge-primary" style="background-color: #FF1b9c;width:20px;">
+                                            <span class="badge badge-primary"
+                                                style="background-color: #FF1b9c;width:20px;">
                                                 &nbsp;
                                             </span>
-                                            Gelato 
-                                            <span class="ml-5 pl-3"> 35%</span>
-                                        </div>                                        
+                                            Gelato
+                                            <span class="ml-5 pl-3">
+                                                {{ p.gelato | number : '1.2-2' }}%
+                                            </span>
+                                        </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card" *ngIf="data.datasets.length>0">
                         <div class="card-header">
                             <h3 class="card-title" style="font-weight: bold;">รายการสั่งซื้อ</h3>
 
@@ -126,15 +153,19 @@
                                 <tbody>
                                     <tr>
                                         <td>มกราคม - มีนาคม</td>
-                                        <td class="text-right">78,300.00</td>
+                                        <td class="text-right">{{ quatar[0] | currency : 'THB' : 'symbol-narrow' : '1.2-2' }}</td>
                                     </tr>
                                     <tr>
-                                        <td>..</td>
-                                        <td class="text-right">..</td>
+                                        <td>เมษายน - มิถุนายน</td>
+                                        <td class="text-right">{{ quatar[1] | currency : 'THB' : 'symbol-narrow' : '1.2-2' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>กรกฎาคม - กันยายน</td>
+                                        <td class="text-right">{{ quatar[2] | currency : 'THB' : 'symbol-narrow' : '1.2-2' }}</td>
                                     </tr>
                                     <tr>
                                         <td>ตุลาคม - ธันวาคม</td>
-                                        <td class="text-right">107,000.00</td>
+                                        <td class="text-right">{{ quatar[3] | currency : 'THB' : 'symbol-narrow' : '1.2-2' }}</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -2,8 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../share/services/alert.service';
-import { OrdersService } from '../share/services/orders.service';
-import { OptionSearch } from '../share/services/product.service';
+import { OptionSearch, OrdersService } from '../share/services/orders.service';
 
 @Component({
   selector: 'app-order',
@@ -65,15 +64,18 @@ export class OrderComponent implements OnInit {
   }
 
   pageChanged(event: any): void {
-    this.option.sp = event.page;
+    this.option.sp = event.page-1;
     this.sp = event.page;
-    this.loadOrders({ sp: event.page - 1, lp: this.option.lp });
+    this.loadOrders(this.option);
   }
 
   loadOrders(option:OptionSearch){
     this.orders.loadOrders(option).then(result=>{
       this.o.orders = result.items;
       this.o.total_items = result.total_items;
+      localStorage.setItem("sales",result.total_items);
+      var date = new Date().valueOf().toString();
+      localStorage.setItem("lasted", date);
     })
   }
 
@@ -96,22 +98,30 @@ export class OrderComponent implements OnInit {
   onUpdateStatus(_id:string, status:number){
     this.orders.updateOrders({_id:_id, status:status}).then(result=>{
       this.alert.success("เปลี่ยนสถานะสำเร็จ")
-      this.loadOrders({sp:0,lp:this.lp});
+      this.loadOrders({sp:this.sp-1,lp:this.lp});
     })
   }
 
+  old:any=[];
+
   onSearch() {
     // 2021-04-14T00:00:00.000
-    var before = formatDate(this.bsInlineRangeValue[0], 'y-MM-dT00:00:00.000', 'en-US');
-    var after = formatDate(this.bsInlineRangeValue[1], 'y-MM-dT00:00:00.000', 'en-US');
+    if(this.old[0]==this.bsInlineRangeValue[0] && this.old[1]==this.bsInlineRangeValue[1]){
+      return;
+    }
+
+    this.option.before = formatDate(this.bsInlineRangeValue[0], 'y-MM-dT00:00:00.000', 'en-US');
+    this.option.after = formatDate(this.bsInlineRangeValue[1], 'y-MM-dT00:00:00.000', 'en-US');
+    var before = this.option.before;
+    var after = this.option.after;
     this.orders.loadOrdersBetween({ sp: 0, lp: 10 }, { before, after }).then(result => {
       this.o.orders = result.items;
       this.o.total_items = result.total_items;
-      console.log(result);
     })
 
     this.data.labels=[];
     this.data.datasets=[];
+    this.old=[];
 
 
     this.orders.loadPlotGraph({ before, after }).then(result => {
@@ -131,7 +141,8 @@ export class OrderComponent implements OnInit {
       this.data.datasets.push({data:overdose,label:'OverDose',backgroundColor:'#1abc9c'})
       this.data.datasets.push({data:gelato,label: 'Gelato', backgroundColor: '#1f009c'})
     });
-
+    this.old.push(this.bsInlineRangeValue[0])
+    this.old.push(this.bsInlineRangeValue[1])
   }
 
   ngOnInit(): void {

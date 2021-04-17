@@ -1,95 +1,195 @@
 <app-auth-content>
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1 class="m-0" style="font-weight: bold;">แผงควบคุม</h1>
-              </div><!-- /.col -->
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
-                  <li class="breadcrumb-item active">แผงควบคุม</li>
-                </ol>
-              </div><!-- /.col -->
-            </div><!-- /.row -->
-          </div><!-- /.container-fluid -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0" style="font-weight: bold;">แผงควบคุม</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">หน้าแรก</a></li>
+              <li class="breadcrumb-item active">แผงควบคุม</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Info boxes -->
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">รายได้</span>
+                <span *ngIf="obj.income!=0" class="info-box-number text-success">
+                  <i class="fas fa-caret-up"></i>
+                  {{obj.income}}
+                  <small>%</small>
+                </span>
+                <span *ngIf="obj.income==0" class="info-box-number text-secondary">
+                  <div class="spinner-border spinner-border-sm" role="status">
+                  </div>
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">การขาย</span>
+                <span class="info-box-number">
+                  {{obj.sales}}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">สินค้า</span>
+                <span class="info-box-number">
+                  {{obj.goods}}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">ผู้เยี่ยมชม</span>
+                <span class="info-box-number">
+                  {{obj.visitor}}
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
         </div>
-        <!-- /.content-header -->
-    
-        <!-- Main content -->
-        <section class="content">
-          <div class="container-fluid">
-            <!-- Info boxes -->
-            <div class="row">
-              <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box">
-                  <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
-    
-                  <div class="info-box-content">
-                    <span class="info-box-text">รายได้</span>
-                    <span class="info-box-number">
-                      {{obj.income}}
-                      <small>%</small>
-                    </span>
+        <p class="text-right text-muted text-lead">
+          อัพเดทล่าสุดเมื่อ {{ obj.lasted | date: 'd MMMM yyyy : HH:mm a' }}
+        </p>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Best seller -->
+          <div class="col-md-12 col-lg-6 col-xl-6">
+            <div class="card card-success">
+              <div class="card-body">
+                <h5 style="font-weight: bold;">
+                  <i class="fas fa-crown text-warning"></i>
+                  สินค้าขายดี
+                </h5>
+                <!-- Attachment -->
+                <div class="attachment-block clearfix" *ngFor="let data of best_seller.items;let i = index;">
+                  <img class="attachment-img" src="{{data.image}}" style="object-fit: cover;height: 100%;"
+                    alt="Attachment Image">
+
+                  <div class="attachment-pushed">
+                    <h4 class="attachment-heading mb-2 text-success" style="font-weight:bold;">
+                      <span class="badge badge-pill badge-success">{{ i+1 }}</span>
+                      {{ data.name }}
+                    </h4>
+                    <div class="row">
+                      <div class="col-sm-2 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">{{ data.popular | number }}</h5>
+                          <span class="description-text">ชิ้น</span>
+                        </div>
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-10">
+                        <div class="attachment-text">
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem neque dolorem quaerat vel
+                          officia, nam alias eaque eius similique ex nostrum, quasi animi sit recusandae voluptates
+                          tenetur, quis in voluptatum.
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.attachment-text -->
                   </div>
-                  <!-- /.info-box-content -->
+                  <!-- /.attachment-pushed -->
                 </div>
-                <!-- /.info-box -->
               </div>
-              <!-- /.col -->
-              <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                  <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
-    
-                  <div class="info-box-content">
-                    <span class="info-box-text">การขาย</span>
-                    <span class="info-box-number">
-                      {{obj.sales}}
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-    
-              <!-- fix for small devices only -->
-              <div class="clearfix hidden-md-up"></div>
-    
-              <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                  <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-    
-                  <div class="info-box-content">
-                    <span class="info-box-text">สินค้า</span>
-                    <span class="info-box-number">
-                      {{obj.goods}}
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
-              <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box mb-3">
-                  <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-    
-                  <div class="info-box-content">
-                    <span class="info-box-text">ผู้เยี่ยมชม</span>
-                    <span class="info-box-number">
-                      {{obj.visitor}}
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
-                </div>
-                <!-- /.info-box -->
-              </div>
-              <!-- /.col -->
             </div>
           </div>
-        </section>
+
+          <!-- ผู้คนสนใจ -->
+          <div class="col-md-12 col-lg-6 col-xl-6">
+            <div class="card card-success">
+              <div class="card-body">
+                <h5 style="font-weight: bold;">
+                  <i class="fas fa-star text-warning"></i>
+                  มีผู้เยี่ยมชมมาก
+                </h5>
+                <!-- Attachment -->
+                <div class="attachment-block clearfix" *ngFor="let data of most_visited.items;let i = index;">
+                  <img class="attachment-img" src="{{ data.image }}" style="object-fit: cover;height: 100%;"
+                    alt="Attachment Image">
+
+                  <div class="attachment-pushed">
+                    <h4 class="attachment-heading text-success" style="font-weight: bold;">
+                      <span class="badge badge-pill badge-success">{{ i+1 }}</span>
+                      {{ data.name }}
+                    </h4>
+                    <div class="row">
+                      <div class="col-sm-2 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">{{ data.view | number }}</h5>
+                          <span class="description-text">ครั้ง</span>
+                        </div>
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-10">
+                        <div class="attachment-text">
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem neque dolorem quaerat vel
+                          officia, nam alias eaque eius similique ex nostrum, quasi animi sit recusandae voluptates
+                          tenetur, quis in voluptatum.
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                    </div>
+                  </div>
+                  <!-- /.attachment-pushed -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+    </section>
+  </div>
 </app-auth-content>

@@ -58,7 +58,17 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row" *ngIf="data2.datasets.length==0">
+                                <div class="col-md-12">
+                                    <button class="btn btn-info" type="button" (click)="onReload()">
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        <span class="visually-hidden mr-1"></span>
+                                        แสดงข้อมูล
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="data2.datasets.length>0">
                                 <div class="col-md-8">
                                     <div style="display: block">
                                         <chart [type]="type" class="w-100" legend="true" [data]="data" [options]="options"></chart>
@@ -69,29 +79,38 @@
                                         <chart [type]="type2" class="w-100"  legend="true" [data]="data2" [options]="options"></chart>
                                     </div>
                                     <div class="p-5">
+                                        <h6 style="font-weight: bold;">
+                                            จำแนกเป็น
+                                        </h6>
                                         <div>
-                                            <span class="badge badge-primary" style="background-color: #1abc9c;width:20px;">
+                                            <span class="badge badge-primary"
+                                                style="background-color: #1abc9c;width:20px;">
                                                 &nbsp;
                                             </span>
                                             Overdose
-                                            <span class="ml-5">65%</span>
+                                            <span class="ml-5">
+                                                {{ p.overdose | number : '1.2-2' }}%
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="badge badge-primary" style="background-color: #FF1b9c;width:20px;">
+                                            <span class="badge badge-primary"
+                                                style="background-color: #FF1b9c;width:20px;">
                                                 &nbsp;
                                             </span>
-                                            Gelato 
-                                            <span class="ml-5 pl-3"> 35%</span>
-                                        </div>                                        
+                                            Gelato
+                                            <span class="ml-5 pl-3">
+                                                {{ p.gelato | number : '1.2-2' }}%
+                                            </span>
+                                        </div>
                                     </div>
                                     
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card" *ngIf="data2.datasets.length>0">
                         <div class="card-header">
-                            <h3 class="card-title" style="font-weight: bold;">รายการสั่งซื้อ</h3>
+                            <h3 class="card-title" style="font-weight: bold;">สรุปผล</h3>
 
                             <div class="card-tools py-2 mt-1">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -118,23 +137,30 @@
                         <div class="card-body">
                             <table class="table table-hover">
                                 <thead>
-                                    <tr>
-                                        <th>เดือน</th>
+                                    <tr class="text-center">
+                                        <th>ประจำปี</th>
                                         <th>จำนวนเงิน (บาท)</th>
+                                        <th class="text-mute">
+                                            <i class="fas fa-sort"></i>
+                                            N/A
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>มกราคม</td>
-                                        <td class="text-right">78,300.00</td>
+                                        <td>2020</td>
+                                        <td class="text-right">฿206,700.00</td>
+                                        <td></td>
                                     </tr>
-                                    <tr>
-                                        <td>..</td>
-                                        <td class="text-right">..</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ธันวาคม</td>
-                                        <td class="text-right">107,000.00</td>
+                                    <tr *ngFor="let data of r.report;let i = index;">
+                                        <td>{{ data.year }}</td>
+                                        <td class="text-right">
+                                            {{ data.amount | currency : 'THB' : 'symbol-narrow' : '1.2-2' }}
+                                        </td>
+                                        <td class="text-success" style="width: 1%;white-space: nowrap;">
+                                            <i class="fas fa-caret-up"></i>
+                                            {{ caret | number :'1.2-2' }} %
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
