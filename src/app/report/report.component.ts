@@ -71,6 +71,17 @@ export class ReportComponent implements OnInit {
     this.bsInlineRangeValue = [this.bsInlineValue, this.maxDate];
     this.loadDoughNut();
     this.loadReport();
+    this.loadInterval();
+  }
+
+  loadInterval(){
+    var b=0;
+    var x = setInterval(()=>{
+      this.onReload();
+      if(b==0){
+        clearInterval(x);
+      }
+    },300)
   }
 
   onReload() {

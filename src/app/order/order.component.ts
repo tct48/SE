@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AlertService } from '../share/services/alert.service';
 import { AuthenService } from '../share/services/authen.service';
 import { OptionSearch, OrdersService } from '../share/services/orders.service';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
   selector: 'app-order',
@@ -15,8 +16,8 @@ export class OrderComponent implements OnInit {
   bsInlineRangeValue: Date[];
   maxDate = new Date();
 
-  sp:number=0;
-  lp:number=10;
+  sp: number = 0;
+  lp: number = 10;
 
   // for chart
   type = 'bar';
@@ -34,9 +35,9 @@ export class OrderComponent implements OnInit {
     maintainAspectRatio: true
   };
 
-  option:OptionSearch={
-    sp:0,
-    lp:this.lp
+  option: OptionSearch = {
+    sp: 0,
+    lp: this.lp
   }
   // chart
   o: any = {
@@ -52,35 +53,30 @@ export class OrderComponent implements OnInit {
 
   // order_detail
   od: any = {
-    orders:0,
-    detail:[]
+    orders: 0,
+    detail: []
   };
 
   constructor(
     private orders: OrdersService,
-    private alert:AlertService,
+    private alert: AlertService,
     private modalService: BsModalService,
-    private authen:AuthenService
+    private authen: AuthenService
   ) {
     this.loadOrders(this.option);
-    // if(this.authen.getAuthenticate()){
-    //   console.log(this.authen.getAuthenticate())
-    //   console.log("WTF");
-    //   this.alert.notify("ไปล๊อกอินดิ้เย็ดแม่")
-    // }
   }
 
   pageChanged(event: any): void {
-    this.option.sp = event.page-1;
+    this.option.sp = event.page - 1;
     this.sp = event.page;
     this.loadOrders(this.option);
   }
 
-  loadOrders(option:OptionSearch){
-    this.orders.loadOrders(option).then(result=>{
+  loadOrders(option: OptionSearch) {
+    this.orders.loadOrders(option).then(result => {
       this.o.orders = result.items;
       this.o.total_items = result.total_items;
-      localStorage.setItem("sales",result.total_items);
+      localStorage.setItem("sales", result.total_items);
       var date = new Date().valueOf().toString();
       localStorage.setItem("lasted", date);
     })
@@ -88,11 +84,33 @@ export class OrderComponent implements OnInit {
 
   modalRef: BsModalRef;
 
+  onDelete(_id: string) {
+    Swal.fire({
+      title: 'คุณแน่ใจหรือไม่ที่จะลบข้อมูล ?',
+      text: 'เมื่อลบข้อมูลแล้วข้อมูลจะสูยหายทันที',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'ใช่, ฉันต้องการลบข้อมูล!',
+      cancelButtonText: 'ยกเลิก'
+    }).then(result => {
+      if (result.value) {
+        this.orders.deleteOrders(_id).then(result => {
+          this.option.sp = 0;
+          this.loadOrders(this.option);
+          this.alert.success("ลบข้อมูลสำเร็จ!");
+        })
+      }
+    })
+
+  }
+
   openModal(template: TemplateRef<any>, _id: string) {
-    this.modalRef = this.modalService.show(template, { id: 1, class:'modal-lg' });
-    this.orders.loadOrders({sp:0,lp:0},_id).then(result=>{
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
+    this.orders.loadOrders({ sp: 0, lp: 0 }, _id).then(result => {
       let dumb = {
-        _id:result.items[0]._id,
+        _id: result.items[0]._id,
         user: result.items[0].user,
         dor: result.items[0].dor,
         total: result.items[0].total
@@ -102,18 +120,35 @@ export class OrderComponent implements OnInit {
     })
   }
 
-  onUpdateStatus(_id:string, status:number){
-    this.orders.updateOrders({_id:_id, status:status}).then(result=>{
+  payment:any={
+    orders:null,
+    amount:null,
+    bank:null,
+    dor:null,
+    verify:null
+  }
+
+  openModalVerify(template: TemplateRef<any>, _id: string) {
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
+    this.orders.loadPaymentByID(_id).then(result=>{
+      console.log(result);
+      this.payment = result;
+    })
+  }
+  
+
+  onUpdateStatus(_id: string, status: number) {
+    this.orders.updateOrders({ _id: _id, status: status }).then(result => {
       this.alert.success("เปลี่ยนสถานะสำเร็จ")
-      this.loadOrders({sp:this.sp-1,lp:this.lp});
+      this.loadOrders({ sp: this.sp - 1, lp: this.lp });
     })
   }
 
-  old:any=[];
+  old: any = [];
 
   onSearch() {
     // 2021-04-14T00:00:00.000
-    if(this.old[0]==this.bsInlineRangeValue[0] && this.old[1]==this.bsInlineRangeValue[1]){
+    if (this.old[0] == this.bsInlineRangeValue[0] && this.old[1] == this.bsInlineRangeValue[1]) {
       return;
     }
 
@@ -126,9 +161,9 @@ export class OrderComponent implements OnInit {
       this.o.total_items = result.total_items;
     })
 
-    this.data.labels=[];
-    this.data.datasets=[];
-    this.old=[];
+    this.data.labels = [];
+    this.data.datasets = [];
+    this.old = [];
 
 
     this.orders.loadPlotGraph({ before, after }).then(result => {
@@ -145,8 +180,8 @@ export class OrderComponent implements OnInit {
         // { data: [65, 59, 80, 81, 56, 55, 40], label: 'OverDose', backgroundColor: '#1abc9c' },
         // { data: [28, 48, 40, 19, 86, 27, 90], label: 'Gelato', backgroundColor: '#1f009c' },
       });
-      this.data.datasets.push({data:overdose,label:'OverDose',backgroundColor:'#1abc9c'})
-      this.data.datasets.push({data:gelato,label: 'Gelato', backgroundColor: '#1f009c'})
+      this.data.datasets.push({ data: overdose, label: 'OverDose', backgroundColor: '#1abc9c' })
+      this.data.datasets.push({ data: gelato, label: 'Gelato', backgroundColor: '#1f009c' })
     });
     this.old.push(this.bsInlineRangeValue[0])
     this.old.push(this.bsInlineRangeValue[1])

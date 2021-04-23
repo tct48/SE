@@ -23,9 +23,14 @@ export class OrdersService{
         if(_id){
             url=`orders/_get.php?_id=${_id}`;
         }
-        console.log(url)
         return this.http.requestGet(url,this.authen.getAuthenticate())
             .toPromise() as Promise<any>
+    }
+
+    loadPaymentByID(orders:string){
+        let url = `payment/_get.php?orders=${orders}`;
+        return this.http.requestGet(url, this.authen.getAuthenticate())
+            .toPromise() as Promise<any>;
     }
 
     loadReport(){
@@ -35,6 +40,11 @@ export class OrdersService{
 
     updateOrders(model:IUpdateStatus){
         return this.http.requestPut('orders/_put.php',this.authen.getAuthenticate(), model)
+            .toPromise() as Promise<any>;
+    }
+
+    deleteOrders(_id:string){
+        return this.http.requestDelete(`orders/_delete.php?_id=${_id}`,this.authen.getAuthenticate())
             .toPromise() as Promise<any>;
     }
 

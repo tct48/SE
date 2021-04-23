@@ -62,7 +62,10 @@
                                 <tbody>
                                     <tr *ngFor="let data of c.category;let i = index;">
                                         <td>{{option.sp==1 ? i+1 : sp*2-1+i}}</td>
-                                        <td>{{ data.name }}</td>
+                                        <td>
+                                            {{ data.name }}
+                                            <i class="fas fa-square shadow33" [ngStyle]="{'color':data.color}"></i>
+                                        </td>
                                         <td>
                                             {{data.num}}
                                             <span *ngIf="!data.num">0</span>
@@ -130,22 +133,24 @@
                                         <td>{{ i+1 }}</td>
                                         <td>
                                             {{ data.name }}<br>
-                                            <img src="{{ data.image }}" class="img-thumbnail" style="max-height: 100px;"
+                                            <img *ngIf="data.image" src="{{ data.image }}" class="img-thumbnail" style="max-height: 100px;"
                                                 alt="">
                                         </td>
                                         <td>
-                                            <span *ngIf="data.category=='Overdose'" class="badge badge-info">{{ data.category }}</span>
-                                            <span *ngIf="data.category=='Gelato'" class="badge badge-info" style="background-color:#9932cc">{{ data.category }}</span>
+                                            <span class="badge badge-info"
+                                                [ngStyle]="{'background-color':data.color}">{{ data.category }}</span>
                                         </td>
                                         <td>฿ {{ data.price }}</td>
                                         <td>
                                             {{ data.visit }}
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-warning text-white mx-1" (click)="openModal2(modalProduct,data)" tooltip="แก้ไข">
+                                            <button type="button" class="btn btn-warning text-white mx-1"
+                                                (click)="openModal2(modalProduct,data)" tooltip="แก้ไข">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                            <button type="button" class="btn btn-danger" (click)="onDelete(data._id)" tooltip="ลบข้อมูล">
+                                            <button type="button" class="btn btn-danger" (click)="onDelete(data._id)"
+                                                tooltip="ลบข้อมูล">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -155,8 +160,8 @@
                         </div>
                         <div class="card-footer">
                             <pagination [totalItems]="p.total_items" (pageChanged)="pageChanged2($event)"
-                                [(ngModel)]="pageProduct.sp" [itemsPerPage]="productLp" [maxSize]="5" previousText="ก่อนหน้า"
-                                nextText="ถัดไป"></pagination>
+                                [(ngModel)]="pageProduct.sp" [itemsPerPage]="productLp" [maxSize]="5"
+                                previousText="ก่อนหน้า" nextText="ถัดไป"></pagination>
                         </div>
                     </div>
                     <!-- /.card -->
@@ -175,12 +180,21 @@
         <form [formGroup]="form">
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">หมวดหมู่สินค้า</label>
-                    <input type="text" class="form-control" formControlName="name" placeholder="กรุณากรอกชื่อ">
+                    <label for="exampleFormControlInput1" class="form-label">หมวดหมู่สินค้า:</label>
+                    <input type="text" class="form-control" formControlName="name" [(ngModel)]="example_data" placeholder="กรุณากรอกชื่อหมวดหมู">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">สี:</label>
+                    <br>
+                    <input type="color" style="width: 30px;" formControlName="color" [(ngModel)]="color">
+                    <span style="margin-left:30px;">ตัวอย่าง :</span>
+                    <span *ngIf="color && example_data" style="margin-left:30px;color:white;" class="badge" [ngStyle]="{'background-color':color}">
+                        {{ example_data }}
+                    </span>
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="onSubmit()" class="btn btn-primary ml-auto">
+                <button (click)="onSubmit()" data-max-size="2048" class="btn btn-primary ml-auto">
                     เพิ่มข้อมูล
                 </button>
             </div>
@@ -208,15 +222,18 @@
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">ประเภท</label>
-                    <select class="form-select form-control" formControlName="category" aria-label="Default select example">
+                    <select class="form-select form-control" formControlName="category"
+                        aria-label="Default select example">
                         <option disabled selected value> -- select an option -- </option>
                         <option *ngFor="let data of MCategory.items" value="{{ data._id }}">{{ data.name }}</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">ไฟล์รูปภาพ</label>
-                    <input class="form-control" type="file"  (change)="handleUpload(inputFile)" #inputFile>
-                    <img [src]="formProduct.value.image" *ngIf="formProduct.value.image" class="img-thumbnail w-50 mt-3">
+                    <input [formControl]="file" type="file" class="form-control" accept="image/*" (change)="fileChange($event)" #inputFile>
+                    <img [src]="imageSrc" *ngIf="imageSrc"
+                        class="img-thumbnail w-50 mt-3">
+                    <p *ngIf="result" [innerHtml]="result"></p>
                 </div>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">หน่วย</label>

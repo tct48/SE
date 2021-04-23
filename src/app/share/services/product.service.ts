@@ -28,6 +28,16 @@ export class ProductService{
             .toPromise() as Promise<any>;
     }
 
+    UploadFile(file_data){
+        return this.http.requestPost('product/upload-file.php', file_data)
+            .toPromise() as Promise<any>;
+    }
+
+    getMaxID(){
+        return this.http.requestGet('product/_get_max_id.php',this.authen.getAuthenticate())
+            .toPromise() as Promise<any>;
+    }
+
     UpdateProduct(model:IProduct){
         return this.http.requestPut('product/_put.php',this.authen.getAuthenticate(),model)
             .toPromise() as Promise<any>;

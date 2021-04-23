@@ -27,4 +27,7 @@ export class AuthNavBarComponent implements OnInit {
     this.alert.success("ขอบคุณที่ใช้บริการ")
   }
 
+  notWorking(){
+    
+  }
 }

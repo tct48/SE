@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Options } from 'ngx-bootstrap/positioning/models';
 import { AlertService } from '../share/services/alert.service';
@@ -7,6 +7,7 @@ import { IProduct, OptionSearch, ProductService } from '../share/services/produc
 
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { CategoryService } from '../share/services/category.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-product',
@@ -20,13 +21,15 @@ export class ProductComponent implements OnInit {
     private category: CategoryService,
     private builder: FormBuilder,
     private modalService: BsModalService,
-    private alert: AlertService
+    private alert: AlertService,
+    private http: HttpClient
   ) {
     this.category.loadCategory(this.option).then(result => {
       this.c.category = result.items;
       this.c.total_items = result.total_items;
     });
 
+    this.getIdForImage();
     this.loadProductItem(this.pageProduct);
 
     this.initialFormCategory();
@@ -51,9 +54,13 @@ export class ProductComponent implements OnInit {
     lp: 5
   }
 
+  example_data: string;
+  color: string;
+
   initialFormCategory() {
     this.form = this.builder.group({
-      name: ['', Validators.required]
+      name: ['', Validators.required],
+      color: ['', Validators.required]
     });
 
     this.formProduct = this.builder.group({
@@ -71,13 +78,13 @@ export class ProductComponent implements OnInit {
   selectedFile: ImageSnippet;
   dumb: any;
 
-  MCategory:any= {
-    items:[],
-    total_items:0
+  MCategory: any = {
+    items: [],
+    total_items: 0
   }
 
-  loadModelCategory(){
-    this.category.loadCategoryInsert().then(result=>{
+  loadModelCategory() {
+    this.category.loadCategoryInsert().then(result => {
       this.MCategory = result;
     })
   }
@@ -121,6 +128,8 @@ export class ProductComponent implements OnInit {
         this.c.category = result.items;
         this.c.total_items = result.total_items;
       })
+
+    console.log(this.c)
   }
 
   loadProductItem(option?: OptionSearch) {
@@ -131,16 +140,19 @@ export class ProductComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg' });
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
   }
 
   openModal2(template: TemplateRef<any>, model: IProduct) {
     this.onUpdate(model);
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg' });
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
   }
 
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
+  config= {
+    ignoreBackdropClick:true
+  }
 
   onSubmit() {
     if (!this.form) {
@@ -152,12 +164,80 @@ export class ProductComponent implements OnInit {
 
     this.closeModal();
     this.category.InsertCategory(this.form.value).then(result => {
+      console.log(result);
+      if (result.code == "500") {
+        this.alert.notify(result.message);
+        return;
+      }
+
       this.alert.success("เพิ่มข้อมูลสำเร็จ");
       this.loadCategoryItem();
+      this.loadModelCategory();
     })
   }
 
+  file = new FormControl('');
+  file_data: any;
+  image_id: any;
+
+
+  getIdForImage() {
+    this.product.getMaxID().then(result => {
+      this.image_id = parseInt(result.max) + 1;
+    })
+  }
+  location: string;
+  imageSrc:string;
+  fileChange(event) {
+    if(event.target.files){
+      var reader = new FileReader();
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (event:any)=>{
+        this.imageSrc = event.target.result;
+      }
+    }
+    const fileList: FileList = event.target.files;
+    //check whether file is selected or not
+    if (fileList.length > 0) {
+      const file = fileList[0];
+
+      //get file information such as name, size and type
+      console.log('finfo', file.name, file.size, file.type);
+      this.location = this.image_id + "-" + file.name;
+
+      //max file size is 4 mb
+      if ((file.size / 1048576) <= 4) {
+        let formData = new FormData();
+        let info = { id: 2, name: 'raja' }
+        formData.append('file', file, this.location);
+        formData.append('id', '2');
+        formData.append('tz', new Date().toISOString())
+        formData.append('update', '2')
+        formData.append('info', JSON.stringify(info))
+        this.file_data = formData;
+        this.form.controls["image"].setValue("jj")
+      } else {
+        //this.snackBar.open('File size exceeds 4 MB. Please choose less than 4 MB','',{duration: 2000});
+      }
+    }
+  }
+
+  ip = "http://www.dee-jung.com/snowmilk/backend/api/product/";
+  result: string;
+  uploadImage() {
+    this.http.post(this.ip + 'upload-file.php', this.file_data)
+      .subscribe(res => {
+        //send success response
+        console.log(res);
+      }, (err) => {
+        //send error response
+        console.log(err);
+        this.result = err.error.text;
+      });
+  }
+
   onSubmitProduct() {
+    this.formProduct.controls['image'].setValue('http://www.dee-jung.com/snowmilk/uploads/' + this.location);
     if (this.formProduct.invalid) {
       this.alert.notify("กรุณากรอกข้อมูลให้ครบถ้วน!")
       return;
@@ -173,6 +253,8 @@ export class ProductComponent implements OnInit {
         this.update = false;
 
         this.modalService.hide();
+        this.loadCategoryItem();
+        this.uploadImage();
       })
     } else {
       // ถ้า insert
@@ -183,10 +265,11 @@ export class ProductComponent implements OnInit {
         this.loadProductItem({ sp: 0, lp: 5 });
 
         this.modalService.hide();
+
+        this.uploadImage();
       })
     }
-
-
+    this.getIdForImage();
   }
 
   update: boolean = false;

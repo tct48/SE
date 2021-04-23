@@ -77,6 +77,17 @@ export class ReportQuaterComponent implements OnInit {
     gelato:0
   }
 
+  intervalLoad(){
+    var b=1;
+    var x = setInterval(()=>{
+      this.onReload();
+      b=0;
+      if(b==0){
+        clearInterval(x);
+      }
+    },300)
+  }
+
   loadOrder() {
     if (this.old == "loadOrder()" && this.data.datasets.length != 0) {
       this.data.datasets = [];
@@ -238,5 +249,6 @@ export class ReportQuaterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.intervalLoad();
   }
 }

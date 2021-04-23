@@ -149,7 +149,6 @@
 
                                                 <div class="dropdown-menu" role="menu">
                                                     <a class="dropdown-item" style="cursor: pointer;" (click)="onUpdateStatus(data._id,0)">ยังไม่ชำระเงิน</a>
-                                                    <a class="dropdown-item" style="cursor: pointer;" (click)="onUpdateStatus(data._id,1)">รอตรวจสอบ</a>
                                                     <a class="dropdown-item" style="cursor: pointer;" (click)="onUpdateStatus(data._id,2)">ตรวจสอบสำเร็จ</a>
                                                     <a class="dropdown-item" style="cursor: pointer;" (click)="onUpdateStatus(data._id,3)">จัดส่งสินค้าสำเร็จ</a>
                                                 </div>
@@ -163,7 +162,11 @@
                                                     <i class="fas fa-eye"></i>
                                                 </button>
 
-                                                <button type="button" tooltip="ลบ" class="btn btn-outline-danger">
+                                                <button class="btn btn-secondary" tooltip="สถานะชำระเงิน" (click)="openModalVerify(modalVerify,data._id)">
+                                                    <i class="fas fa-check"></i>                                                    
+                                                </button>
+
+                                                <button type="button" tooltip="ลบ" (click)="onDelete(data._id)" class="btn btn-outline-danger">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
@@ -250,6 +253,48 @@
                 </table>
             </div>
 
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="modalRef.hide()">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </ng-template>
+
+    <ng-template #modalVerify>
+        <div class="modal-header">
+            <h4 style="font-weight: bold;" class="modal-title pull-left">รายละเอียดคำสั่งซื้อ</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body px-3">
+            <h3 class="text-center">รหัสคำสั่งซื้อ</h3>
+            <h1 style="font-weight:bold" class="text-info text-center">RC000{{ payment.orders }}</h1>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlInput1" class="form-label">ธนาคารที่ชำระเงิน:</label>
+                <input type="text" value="{{ payment.bank }}" class="form-control"
+                    readonly>
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlInput1" class="form-label">วันที่ชำระเงิน:</label>
+                <input type="text" value="{{ payment.dor | date: 'dd MMMM yyyy' }}" class="form-control"
+                    readonly>
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlInput1" class="form-label">เวลาโดยประมาณ:</label>
+                <input type="text" value="{{ payment.dor | date: 'HH:mm a' }}" class="form-control"
+                    readonly>
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlInput1" class="form-label">เป็นจำนวนเงิน:</label>
+                <input type="text" value="{{ payment.amount | currency:'THB':'symbol-narrow':'1.2-2' }}" class="form-control"
+                    readonly>
+            </div>
+            <div class="form-group mb-3">
+                <label for="exampleFormControlInput1" class="form-label">หลักฐานการโอนเงิน:</label><br>
+                <img src="https://www.makalius.co.th/wp-content/uploads/2019/02/note_bank_k.jpg" class="img-thumbnail mx-auto w-50 shadow33" alt="">
+            </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" (click)="modalRef.hide()">

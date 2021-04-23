@@ -41,7 +41,8 @@ export class AlertService{
         Swal.fire({
             icon: 'error',
             title: title,
-            showConfirmButton:true
+            showConfirmButton:false,
+            timer:1500
         })
     }
 

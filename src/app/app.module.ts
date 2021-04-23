@@ -25,10 +25,13 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SigninComponent } from './signin/signin.component';
+import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 const otherModule = [
   ReactiveFormsModule,
   ChartModule,
+  AngularEditorModule,
   ModalModule.forRoot(),
   TooltipModule.forRoot(),
   TypeaheadModule.forRoot(),
@@ -61,7 +64,12 @@ const otherModule = [
   exports: [
     otherModule
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    {
+      provide: LocationStrategy, useClass: HashLocationStrategy
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
