@@ -15,8 +15,14 @@ export class CategoryService{
     }
 
     loadCategory(option:OptionSearch){
-        let url=`category/_get.php?sp=${option.sp}&lp=${option.lp}`;
+        let url=`category/_get.php?sp=${Number(option.sp)-1}&lp=${Number(option.lp)}`;
         return this.http.requestGet(url,this.authen.getAuthenticate())
+            .toPromise() as Promise<any>
+    }
+
+    deleteCategory(_id:string){
+        let url=`category/_delete.php?_id=${_id}`;
+        return this.http.requestDelete(url,this.authen.getAuthenticate())
             .toPromise() as Promise<any>
     }
 

@@ -5,6 +5,7 @@ import { AlertService } from '../share/services/alert.service';
 import { AuthenService } from '../share/services/authen.service';
 import { OptionSearch, OrdersService } from '../share/services/orders.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-order',
@@ -61,7 +62,8 @@ export class OrderComponent implements OnInit {
     private orders: OrdersService,
     private alert: AlertService,
     private modalService: BsModalService,
-    private authen: AuthenService
+    private authen: AuthenService,
+    private router: Router
   ) {
     this.loadOrders(this.option);
   }
@@ -83,6 +85,34 @@ export class OrderComponent implements OnInit {
   }
 
   modalRef: BsModalRef;
+  onUpdateSupplie(_id: string) {
+    Swal.mixin({
+      input: 'text',
+      confirmButtonText: 'Next &rarr;',
+      showCancelButton: true,
+      progressSteps: ['1']
+    }).queue([
+      {
+        title: 'เลขพัสดุ !?',
+        text: 'กรุณากรอกเลขพัสดุของลูกค้า'
+      }
+    ]).then((result) => {
+      if (result.value[0]) {
+        var obj = {
+          _id: _id,
+          supplies: result.value[0]
+        }
+        this.orders.updateSupp(obj).then(result => {
+          console.log(result)
+          console.log(this.option)
+          this.loadOrders({ sp: Number(this.option.sp) - 1, lp: this.option.lp });
+        })
+      } else {
+        this.alert.notify("กรุณากรอกเลขพัสดุ")
+      }
+    })
+
+  }
 
   onDelete(_id: string) {
     Swal.fire({
@@ -106,9 +136,12 @@ export class OrderComponent implements OnInit {
 
   }
 
+  address: any;
+
   openModal(template: TemplateRef<any>, _id: string) {
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg', ignoreBackdropClick: true });
     this.orders.loadOrders({ sp: 0, lp: 0 }, _id).then(result => {
+      console.log(result)
       let dumb = {
         _id: result.items[0]._id,
         user: result.items[0].user,
@@ -118,30 +151,72 @@ export class OrderComponent implements OnInit {
       this.od.orders = dumb;
       this.od.detail = result.items;
     })
+
+    // Jakiro
+    this.orders.getAddressByOrdersID(_id).then(result => {
+      this.address = result.items[0];
+    })
   }
 
-  payment:any={
-    orders:null,
-    amount:null,
-    bank:null,
-    dor:null,
-    verify:null
+  payment: any = {
+    orders: null,
+    amount: null,
+    bank: null,
+    dor: null,
+    verify: null
   }
 
   openModalVerify(template: TemplateRef<any>, _id: string) {
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
-    this.orders.loadPaymentByID(_id).then(result=>{
+    this.orders.loadPaymentByID(_id).then(result => {
+      if (result.total_items == 0) {
+        this.alert.notify("ผู้ใช้ยังไม่ทำการแจ้งชำระเงิน!")
+        return;
+      }
+      this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg', ignoreBackdropClick: true });
       console.log(result);
       this.payment = result;
     })
   }
-  
+
+  onPrint(_id) {
+    window.open("http://www.dee-jung.com/snowmilk/backend/#/supplier?_id=" + _id, '_blank');
+  }
+
 
   onUpdateStatus(_id: string, status: number) {
-    this.orders.updateOrders({ _id: _id, status: status }).then(result => {
-      this.alert.success("เปลี่ยนสถานะสำเร็จ")
-      this.loadOrders({ sp: this.sp - 1, lp: this.lp });
-    })
+    if (status == 3) {
+      Swal.mixin({
+        input: 'text',
+        confirmButtonText: 'Next &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1']
+      }).queue([
+        {
+          title: 'เลขพัสดุ !?',
+          text: 'กรุณากรอกเลขพัสดุของลูกค้า'
+        }
+      ]).then(res => {
+        if (res.value[0]) {
+          this.orders.updateOrders({ _id: _id, status: status }).then(result => {
+            this.loadOrders({ sp: Number(this.option.sp) - 1, lp: this.lp });
+            var obj = {
+              _id: _id,
+              supplies: res.value[0]
+            }
+            this.orders.updateSupp(obj).then(result => {
+              this.loadOrders({ sp: Number(this.option.sp) - 1, lp: this.option.lp });
+            })
+          })
+        } else {
+          this.alert.notify("กรุณากรอกเลขพัสดุ")
+        }
+      })
+    } else {
+      this.orders.updateOrders({_id:_id,status:status}).then(result=>{
+        this.alert.success("เปลี่ยนสถานะสำเร็จ")
+        this.loadOrders({ sp: Number(this.option.sp) - 1, lp: this.lp });
+      })
+    }
   }
 
   old: any = [];

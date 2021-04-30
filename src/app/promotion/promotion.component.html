@@ -167,6 +167,9 @@
                                         <th>รายการ</th>
                                         <th>รายละเอียด</th>
                                         <th>วันหมดอายุ</th>
+                                        <th>
+                                            control
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -180,13 +183,18 @@
                                                 {{ data.status==1?'ใช้งานได้':'หมดอายุ' }}
                                             </span>
                                         </td>
+                                        <td>
+                                            <button class="btn btn-danger" (click)="onDeletePromotion(data._id)" tooltip="ลบโปรโมชั่น">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer">
                             <pagination [totalItems]="item.total_items" (pageChanged)="pageChanged($event)"
-                                [(ngModel)]="option.sp" [itemsPerPage]="2" [maxSize]="5" previousText="ก่อนหน้า"
+                                [(ngModel)]="option.sp" [itemsPerPage]="option.lp" [maxSize]="5" previousText="ก่อนหน้า"
                                 nextText="ถัดไป"></pagination>
                         </div>
                     </div>

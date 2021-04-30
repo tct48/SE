@@ -6,5 +6,7 @@ export const AppURL = {
     Report: "report",
     Quater: "report-quater",
     Signin: "login",
-    Authentication: "authentication"
+    Authentication: "authentication",
+    Supplies:"supplier",
+    Member:"member"
 }

@@ -10,59 +10,74 @@ import { ProductService } from '../share/services/product.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private prouduct:ProductService,
-    private dashboard:DashboardService
-  ) { 
-    this.prouduct.loadProduct({sp:0,lp:1}).then(result=>{
+    private prouduct: ProductService,
+    private dashboard: DashboardService
+  ) {
+    this.prouduct.loadProduct({ sp: 0, lp: 1 }).then(result => {
       this.obj.goods = result.total_items;
     })
-    if(localStorage.getItem("income")){
+    if (localStorage.getItem("income")) {
       this.obj.income = parseInt(localStorage.getItem("income"));
     }
 
-    if(localStorage.getItem("lasted")){
+    if (localStorage.getItem("lasted")) {
       this.obj.lasted = parseInt(localStorage.getItem("lasted"));
     }
 
-    if(localStorage.getItem("sales")){
+    if (localStorage.getItem("sales")) {
       this.obj.sales = parseInt(localStorage.getItem("sales"));
     }
     this.loadBestSeller();
     this.loadMostVisited();
+    this.loadOEM();
   }
 
-  obj={
-    income:0,
-    sales:0,
-    goods:0,
-    visitor:0,
-    lasted:0
+  obj = {
+    income: 0,
+    sales: 0,
+    goods: 0,
+    visitor: 0,
+    lasted: 0
   }
 
-  kaka=[0,1,2];
-  
-  best_seller:any={
-    items:[],
-    total_items:0
+  kaka = [0, 1, 2];
+
+  best_seller: any = {
+    items: [],
+    total_items: 0
   }
 
-  most_visited:any = {
-    items:[],
-    total_items:0
+  most_visited: any = {
+    items: [],
+    total_items: 0
   }
+
+  oem: any = {
+    items: [],
+    total_items: 0
+  }
+
+  lorem: string = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis ratione quam beatae dolorem os obcaecati culpa hic inventore, accusamus voluptate sint ad fugiat est similique suscipi provident totam quisquam sed!";
 
   ngOnInit(): void {
   }
 
-  loadBestSeller(){
-    this.dashboard.loadProductPopular().then(result=>{
+  loadBestSeller() {
+    this.dashboard.loadProductPopular().then(result => {
       this.best_seller = result;
     })
   }
 
-  loadMostVisited(){
-    this.dashboard.loadProductVisited().then(result=>{
+  loadMostVisited() {
+    this.dashboard.loadProductVisited().then(result => {
       this.most_visited = result;
+    })
+  }
+
+  loadOEM() {
+    this.dashboard.loadOEM().then(result => {
+      this.oem = result;
+      console.log(result)
     })
   }
 

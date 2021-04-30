@@ -58,11 +58,12 @@ export interface IProduct{
     visit:number,
     updated_at:number,
     unit:number,
-    taste:string 
+    taste:string,
+    content:string
 }
 
 export interface OptionSearch{
-    sp?:Number,
-    lp?:Number,
+    sp?:number,
+    lp?:number,
     text_search?:string,
 }

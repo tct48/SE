@@ -27,6 +27,9 @@ import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { SigninComponent } from './signin/signin.component';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { SuppliesPrintComponent } from './supplies-print/supplies-print.component';
+import { MemberComponent } from './member/member.component';
+import { DateAgoPipe } from './pipes/date-ago.pipe';
 
 const otherModule = [
   ReactiveFormsModule,
@@ -50,7 +53,10 @@ const otherModule = [
     OrderComponent,
     ReportComponent,
     ReportQuaterComponent,
-    SigninComponent
+    SigninComponent,
+    SuppliesPrintComponent,
+    MemberComponent,
+    DateAgoPipe
   ],
   imports: [
     BrowserModule,

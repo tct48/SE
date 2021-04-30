@@ -103,12 +103,22 @@
         <div class="row">
           <!-- Best seller -->
           <div class="col-md-12 col-lg-6 col-xl-6">
-            <div class="card card-success">
-              <div class="card-body">
-                <h5 style="font-weight: bold;">
+            <div class="card collapsed-card">
+              <div class="card-header">
+                <h5 class="card-title bold">
                   <i class="fas fa-crown text-warning"></i>
                   สินค้าขายดี
                 </h5>
+                <div class="card-tools py-2 mt-1">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
                 <!-- Attachment -->
                 <div class="attachment-block clearfix" *ngFor="let data of best_seller.items;let i = index;">
                   <img class="attachment-img" src="{{data.image}}" style="object-fit: cover;height: 100%;"
@@ -129,9 +139,7 @@
                       <!-- /.col -->
                       <div class="col-sm-10">
                         <div class="attachment-text">
-                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem neque dolorem quaerat vel
-                          officia, nam alias eaque eius similique ex nostrum, quasi animi sit recusandae voluptates
-                          tenetur, quis in voluptatum.
+                          {{ data.content?data.content:'-ไม่มีข้อมูล-' }}
                         </div>
                         <!-- /.description-block -->
                       </div>
@@ -151,12 +159,22 @@
 
           <!-- ผู้คนสนใจ -->
           <div class="col-md-12 col-lg-6 col-xl-6">
-            <div class="card card-success">
-              <div class="card-body">
-                <h5 style="font-weight: bold;">
+            <div class="card collapsed-card">
+              <div class="card-header">
+                <h5 class="card-title bold">
                   <i class="fas fa-star text-warning"></i>
                   มีผู้เยี่ยมชมมาก
                 </h5>
+                <div class="card-tools py-2 mt-1">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
                 <!-- Attachment -->
                 <div class="attachment-block clearfix" *ngFor="let data of most_visited.items;let i = index;">
                   <img class="attachment-img" src="{{ data.image }}" style="object-fit: cover;height: 100%;"
@@ -177,9 +195,7 @@
                       <!-- /.col -->
                       <div class="col-sm-10">
                         <div class="attachment-text">
-                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem neque dolorem quaerat vel
-                          officia, nam alias eaque eius similique ex nostrum, quasi animi sit recusandae voluptates
-                          tenetur, quis in voluptatum.
+                          {{ data.content?data.content:lorem }}
                         </div>
                         <!-- /.description-block -->
                       </div>
@@ -194,9 +210,76 @@
               </div>
             </div>
           </div>
+
+          <!-- OEM -->
+          <div class="w-100">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title bold">
+                  <i class="fas fa-star text-warning"></i>
+                  OEM
+                </h5>
+                <div class="card-tools py-2 mt-1">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- Attachment -->
+                <div class="attachment-block clearfix">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อจริง - นามสกุล</th>
+                        <th>
+                          <i class="fas fa-line"></i>
+                          Line
+                        </th>
+                        <th>
+                          ที่อยู่
+                        </th>
+                        <th>
+                          #
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of oem.items;let i = index;">
+                        <td>{{ i+1 }}</td>
+                        <td>
+                          <span tooltip="{{data.phone}}">
+                            {{ data.firstname + " " + data.lastname }}
+                          </span>
+                        </td>
+                        <td>
+                          {{ data.line }}
+                        </td>
+                        <td>
+                          {{ data.address }}
+                        </td>
+                        <td>
+                          {{ data.dor | date : 'dd MMMM yyyy' }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <a class="d-block text-right">
+                  ดูเพิ่มเติม..
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
     </section>
+
+
   </div>
 </app-auth-content>

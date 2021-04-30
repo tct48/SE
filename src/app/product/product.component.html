@@ -57,6 +57,7 @@
                                         <th>ลำดับ</th>
                                         <th>หมวดหมู่</th>
                                         <th>จำนวน (ชิ้น)</th>
+                                        <th>control</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,13 +71,18 @@
                                             {{data.num}}
                                             <span *ngIf="!data.num">0</span>
                                         </td>
+                                        <td>
+                                            <button class="btn btn-danger" (click)="onDeleteCategory(data._id)" tooltip="ลบข้อมูล">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="card-footer">
                             <pagination [totalItems]="c.total_items" (pageChanged)="pageChanged($event)"
-                                [(ngModel)]="option.sp" [itemsPerPage]="2" [maxSize]="5" previousText="ก่อนหน้า"
+                                [(ngModel)]="option.sp" [itemsPerPage]="option.lp" [maxSize]="5" previousText="ก่อนหน้า"
                                 nextText="ถัดไป"></pagination>
                         </div>
                     </div>
@@ -242,6 +248,12 @@
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">รสชาติ</label>
                     <input type="text" class="form-control" formControlName="taste" placeholder="กรุณากรอกชื่อ">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">รายละเอียด</label>
+                    <textarea formControlName="content" class="form-control" rows="5">
+                        {{ content }}
+                    </textarea>
                 </div>
             </div>
             <div class="modal-footer">

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../http.service';
 import { AuthenService } from './authen.service';
+import { OptionSearch } from './product.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +25,18 @@ export class DashboardService{
     // Most Visited
     loadProductVisited(){
         let url=`dashboard/_get.php?type=visit`;
+        return this.http.requestGet(url,this.authen.getAuthenticate())
+            .toPromise() as Promise<any>
+    }
+
+    loadMember(option:OptionSearch){
+        let url=`member/_get.php?sp=${Number(option.sp)-1}&lp=${option.lp}`;
+        return this.http.requestGet(url,this.authen.getAuthenticate())
+            .toPromise() as Promise<any>
+    }
+
+    loadOEM(){
+        let url=`oem/_get.php`;
         return this.http.requestGet(url,this.authen.getAuthenticate())
             .toPromise() as Promise<any>
     }

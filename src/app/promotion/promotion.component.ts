@@ -86,8 +86,8 @@ export class PromotionComponent implements OnInit {
   }
   sp:0;
   option:OptionSearch={
-    sp:0,
-    lp:2
+    sp:1,
+    lp:5
   };  
   ip = "http://www.dee-jung.com/snowmilk/backend/api/promotion/";
   result: string;
@@ -120,6 +120,13 @@ export class PromotionComponent implements OnInit {
     this.option.sp = event.page;
     this.sp = event.page;
     this.loadPromotion();
+  }
+
+  onDeletePromotion(_id:string){
+    this.promotion.deletePromotion(_id).then(result=>{
+      this.alert.success("ลบโปรโมชั่นสำเร็จ!");
+      this.loadPromotion();
+    })
   }
 
   loadPromotionById(){
@@ -162,7 +169,7 @@ export class PromotionComponent implements OnInit {
     
     this.model.content = this.htmlContent;
     var obj = this.model;
-    obj.image = "http://www.dee-jung.com/snowmilk/frontend/assets/img/promotion/" + this.location;
+    obj.image = "http://www.dee-jung.com/snowmilk/backend/assets/img/promotion/" + this.location;
     
     obj.code="APR2021-"+this.promotion_id;
     this.promotion.insertPromotion(obj).then(result=>{

@@ -40,13 +40,13 @@ export class ProductComponent implements OnInit {
   formProduct: FormGroup;
 
   sp: number = 1;
-  lp: number = 2;
+  lp: number = 5;
 
   productLp: number = 5;
 
   option: OptionSearch = {
-    sp: 0,
-    lp: 2
+    sp: 1,
+    lp: 5
   }
 
   pageProduct: OptionSearch = {
@@ -71,6 +71,7 @@ export class ProductComponent implements OnInit {
       image: ['', Validators.required],
       unit: ['', Validators.required],
       taste: ['', Validators.required],
+      content: ['', Validators.required]
     })
   }
 
@@ -86,6 +87,15 @@ export class ProductComponent implements OnInit {
   loadModelCategory() {
     this.category.loadCategoryInsert().then(result => {
       this.MCategory = result;
+    })
+  }
+
+  onDeleteCategory(_id:string){
+    // this.alert.notify(_id);
+    this.category.deleteCategory(_id).then(result=>{
+      this.alert.success("ลบข้อมูลสำเร็จ");
+      this.loadCategoryItem();
+      console.log(result);
     })
   }
 
@@ -119,7 +129,7 @@ export class ProductComponent implements OnInit {
 
   loadCategoryItem(option?: OptionSearch) {
     if (!option) {
-      this.category.loadCategory({ sp: 0, lp: this.lp }).then(result => {
+      this.category.loadCategory({ sp: 1, lp: this.lp }).then(result => {
         this.c.category = result.items;
         this.c.total_items = result.total_items;
       })
@@ -140,18 +150,18 @@ export class ProductComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg', ignoreBackdropClick: true });
   }
 
   openModal2(template: TemplateRef<any>, model: IProduct) {
     this.onUpdate(model);
-    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg',ignoreBackdropClick:true });
+    this.modalRef = this.modalService.show(template, { id: 1, class: 'modal-lg', ignoreBackdropClick: true });
   }
 
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
-  config= {
-    ignoreBackdropClick:true
+  config = {
+    ignoreBackdropClick: true
   }
 
   onSubmit() {
@@ -187,12 +197,12 @@ export class ProductComponent implements OnInit {
     })
   }
   location: string;
-  imageSrc:string;
+  imageSrc: string;
   fileChange(event) {
-    if(event.target.files){
+    if (event.target.files) {
       var reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
-      reader.onload = (event:any)=>{
+      reader.onload = (event: any) => {
         this.imageSrc = event.target.result;
       }
     }
@@ -237,7 +247,8 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmitProduct() {
-    this.formProduct.controls['image'].setValue('http://www.dee-jung.com/snowmilk/uploads/' + this.location);
+    if (this.location)
+      this.formProduct.controls['image'].setValue('http://www.dee-jung.com/snowmilk/uploads/' + this.location);
     if (this.formProduct.invalid) {
       this.alert.notify("กรุณากรอกข้อมูลให้ครบถ้วน!")
       return;
@@ -251,28 +262,36 @@ export class ProductComponent implements OnInit {
         this.alert.success("แก้ไขข้อมูลสำเร็จ");
         this.loadProductItem({ sp: 0, lp: 5 });
         this.update = false;
-
+        this.content = null;
         this.modalService.hide();
         this.loadCategoryItem();
-        this.uploadImage();
+        if (this.location)
+          this.uploadImage();
+        this.location = null;
       })
     } else {
       // ถ้า insert
       this.product.InsertProduct(this.formProduct.value).then(result => {
-        this.formProduct.reset();
-        this.dumb = null;
-        this.alert.success("เพิ่มข้อมูลสำเร็จ");
-        this.loadProductItem({ sp: 0, lp: 5 });
+        if (result.message = "เพิ่มข้อมูลสำเร็จ") {
+          this.formProduct.reset();
+          this.dumb = null;
+          this.alert.success("เพิ่มข้อมูลสำเร็จ");
+          this.loadProductItem({ sp: 0, lp: 5 });
+          console.log(result)
+          this.modalService.hide();
+          this.location = null;
+          this.uploadImage();
+        } else {
+          this.alert.notify();
+        }
 
-        this.modalService.hide();
-
-        this.uploadImage();
       })
     }
     this.getIdForImage();
   }
 
   update: boolean = false;
+  content: string;
 
   onUpdate(data: IProduct) {
     this.update = true;
@@ -284,6 +303,9 @@ export class ProductComponent implements OnInit {
     // this.formProduct.controls['category'].setValue(data.category);
     this.formProduct.controls['unit'].setValue(data.unit);
     this.formProduct.controls['taste'].setValue(data.taste);
+    this.formProduct.controls['content'].setValue(data.content);
+    this.content = data.content;
+    console.log(data)
   }
 
   onDelete(_id: string) {

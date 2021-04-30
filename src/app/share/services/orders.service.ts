@@ -33,6 +33,25 @@ export class OrdersService{
             .toPromise() as Promise<any>;
     }
 
+    getAddressByOrdersID(orders:string){
+        let url = `address/_get.php?orders=${orders}`;
+        return this.http.requestGet(url, this.authen.getAuthenticate())
+            .toPromise() as Promise<any>;
+    }
+
+    getSupplie(orders:string){
+        let url = `orders/_get_supplie_by_id.php?orders=${orders}`;
+        console.log(url)
+        return this.http.requestGet(url, this.authen.getAuthenticate())
+            .toPromise() as Promise<any>;
+    }
+
+    getPaymentByID(orders:string){
+        let url = `address/_get.php?orders=${orders}`;
+        return this.http.requestGet(url, this.authen.getAuthenticate())
+            .toPromise() as Promise<any>; 
+    }
+
     loadReport(){
         return this.http.requestGet('orders/_get_report.php',this.authen.getAuthenticate())
             .toPromise() as Promise<any>
@@ -40,6 +59,11 @@ export class OrdersService{
 
     updateOrders(model:IUpdateStatus){
         return this.http.requestPut('orders/_put.php',this.authen.getAuthenticate(), model)
+            .toPromise() as Promise<any>;
+    }
+
+    updateSupp(model:any){
+        return this.http.requestPut('orders/_put_supplies.php', this.authen.getAuthenticate(), model)
             .toPromise() as Promise<any>;
     }
 

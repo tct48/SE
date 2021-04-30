@@ -20,7 +20,7 @@ export class PromotionService {
   }
 
   loadAllPromotion(option: OptionSearch) {
-    let url = `promotion/_get.php?sp=${option.sp}&lp=${option.lp}`;
+    let url = `promotion/_get.php?sp=${Number(option.sp)-1}&lp=${option.lp}`;
     return this.http.requestGet(url, this.authen.getAuthenticate())
       .toPromise() as Promise<any>;
 
@@ -29,6 +29,11 @@ export class PromotionService {
   updateStatus(model:any) {
     let url = `promotion/_put.php?`;
     return this.http.requestPut(url, this.authen.getAuthenticate(), model).toPromise() as Promise<any>;
+  }
+
+  deletePromotion(_id:any) {
+    let url = `promotion/_delete.php?_id=${_id}`;
+    return this.http.requestDelete(url, this.authen.getAuthenticate()).toPromise() as Promise<any>;
   }
 
   insertPromotion(model: any) {
