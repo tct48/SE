@@ -35,36 +35,39 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ลำดับ</th>
-                                        <th>username</th>
-                                        <th>ชื่อจริง - นามสกุล</th>
-                                        <th>email</th>
-                                        <th>สมัครสมาชิกเมื่อ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of item.items;let i = index;">
-                                        <td>
-                                            {{ i+1 }}
-                                        </td>
-                                        <td>
-                                            {{ data.username }}
-                                        </td>
-                                        <td>
-                                            {{ data.name }}
-                                        </td>
-                                        <td>
-                                            {{ data.email }}
-                                        </td>
-                                        <td>
-                                            {{data.created_at | dateAgo}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ลำดับ</th>
+                                            <th>username</th>
+                                            <th>ชื่อจริง - นามสกุล</th>
+                                            <th>email</th>
+                                            <th>สมัครสมาชิกเมื่อ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of item.items;let i = index;">
+                                            <td style="white-space: nowrap;">
+                                                {{ i+1 }}
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                {{ data.username }}
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                {{ data.name }}
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                {{ data.email }}
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                {{data.created_at | dateAgo}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <div class="card-footer">
                             <pagination [totalItems]="item.total_items" (pageChanged)="pageChanged($event)"

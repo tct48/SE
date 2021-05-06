@@ -231,43 +231,45 @@
               <div class="card-body">
                 <!-- Attachment -->
                 <div class="attachment-block clearfix">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อจริง - นามสกุล</th>
-                        <th>
-                          <i class="fas fa-line"></i>
-                          Line
-                        </th>
-                        <th>
-                          ที่อยู่
-                        </th>
-                        <th>
-                          #
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let data of oem.items;let i = index;">
-                        <td>{{ i+1 }}</td>
-                        <td>
-                          <span tooltip="{{data.phone}}">
-                            {{ data.firstname + " " + data.lastname }}
-                          </span>
-                        </td>
-                        <td>
-                          {{ data.line }}
-                        </td>
-                        <td>
-                          {{ data.address }}
-                        </td>
-                        <td>
-                          {{ data.dor | date : 'dd MMMM yyyy' }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>ลำดับ</th>
+                          <th>ชื่อจริง - นามสกุล</th>
+                          <th>
+                            <i class="fas fa-line"></i>
+                            Line
+                          </th>
+                          <th>
+                            ที่อยู่
+                          </th>
+                          <th>
+                            #
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let data of oem.items;let i = index;">
+                          <td  style="white-space: nowrap;">{{ i+1 }}</td>
+                          <td  style="white-space: nowrap;">
+                            <span tooltip="{{data.phone}}">
+                              {{ data.firstname + " " + data.lastname }}
+                            </span>
+                          </td>
+                          <td  style="white-space: nowrap;">
+                            {{ data.line }}
+                          </td>
+                          <td style="white-space: nowrap;">
+                            {{ data.address }}
+                          </td>
+                          <td  style="white-space: nowrap;">
+                            {{ data.dor | date : 'dd MMMM yyyy' }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
                 <a class="d-block text-right">
                   ดูเพิ่มเติม..

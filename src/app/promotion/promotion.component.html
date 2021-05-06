@@ -159,38 +159,41 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ลำดับ</th>
-                                        <th>รหัส</th>
-                                        <th>รายการ</th>
-                                        <th>รายละเอียด</th>
-                                        <th>วันหมดอายุ</th>
-                                        <th>
-                                            control
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of item.items;let i = index;">
-                                        <td>{{ i+1 }}</td>
-                                        <td>{{ data.code }}</td>
-                                        <td>{{ data.title }}</td>
-                                        <td><span [innerHtml]="data.content.substring(0,100)+'...'"></span></td>
-                                        <td>
-                                            <span (click)="updateStatus(data._id, data.status)" class="badge {{ data.status==1?'badge-warning':'badge-secondary' }}">
-                                                {{ data.status==1?'ใช้งานได้':'หมดอายุ' }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger" (click)="onDeletePromotion(data._id)" tooltip="ลบโปรโมชั่น">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ลำดับ</th>
+                                            <th>รหัส</th>
+                                            <th>รายการ</th>
+                                            <th>รายละเอียด</th>
+                                            <th>วันหมดอายุ</th>
+                                            <th>
+                                                control
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of item.items;let i = index;">
+                                            <td style="white-space: nowrap;">{{ i+1 }}</td>
+                                            <td style="white-space: nowrap;">{{ data.code }}</td>
+                                            <td style="white-space: nowrap;">{{ data.title }}</td>
+                                            <td style="white-space: nowrap;"><span [innerHtml]="data.content.substring(0,100)+'...'"></span></td>
+                                            <td style="white-space: nowrap;">
+                                                <span (click)="updateStatus(data._id, data.status)" class="badge {{ data.status==1?'badge-warning':'badge-secondary' }}">
+                                                    {{ data.status==1?'ใช้งานได้':'หมดอายุ' }}
+                                                </span>
+                                            </td>
+                                            <td style="white-space: nowrap;">
+                                                <button class="btn btn-danger" (click)="onDeletePromotion(data._id)" tooltip="ลบโปรโมชั่น">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                         <div class="card-footer">
                             <pagination [totalItems]="item.total_items" (pageChanged)="pageChanged($event)"

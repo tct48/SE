@@ -76,6 +76,7 @@ export class OrderComponent implements OnInit {
 
   loadOrders(option: OptionSearch) {
     this.orders.loadOrders(option).then(result => {
+      console.log(result) 
       this.o.orders = result.items;
       this.o.total_items = result.total_items;
       localStorage.setItem("sales", result.total_items);
@@ -151,7 +152,6 @@ export class OrderComponent implements OnInit {
       this.od.orders = dumb;
       this.od.detail = result.items;
     })
-
     // Jakiro
     this.orders.getAddressByOrdersID(_id).then(result => {
       this.address = result.items[0];
